@@ -101,6 +101,80 @@ export interface Plan {
   my_rsvp?: 'attending' | 'tentative' | 'declined' | 'pending';
 }
 
+export interface MemberDailyStatus {
+  status: 'off' | 'work' | 'leave' | 'study' | 'busy' | 'unknown';
+  label: string;
+  short_code: string;
+  is_day_off: boolean;
+  start_time?: string;
+  end_time?: string;
+  is_overnight?: boolean;
+  notes?: string | null;
+}
+
+export interface CircleRosterMember {
+  user: {
+    id: number;
+    name: string;
+    handle: string | null;
+    initials: string;
+  };
+  visibility: 'free_busy' | 'shifts' | 'details';
+  daily_status: Record<string, MemberDailyStatus>;
+  availability: Record<string, Array<{ start: string; end: string; status: string; shift_type?: string }>>;
+}
+
+export interface DaysOffDateSummary {
+  free_count: number;
+  total_count: number;
+  all_free: boolean;
+  free_members: Array<{ id: number; name: string; handle: string | null; initials: string }>;
+  working_members: Array<{ id: number; name: string; handle: string | null; initials: string }>;
+  unknown_members: Array<{ id: number; name: string; handle: string | null; initials: string }>;
+}
+
+export interface OffTimeDateSummary {
+  best_window: {
+    start: string;
+    end: string;
+    duration_minutes: number;
+    duration_formatted: string;
+  } | null;
+  has_overlap: boolean;
+  free_count: number;
+  total_count: number;
+  all_free: boolean;
+  free_members: Array<{ id: number; name: string; handle: string | null; initials: string }>;
+  common_intervals: Array<{ start: string; end: string; status: string }>;
+}
+
+export interface CirclePlanSummary {
+  id: number;
+  title: string;
+  event_type: string;
+  date: string;
+  start_time: string;
+  end_time: string | null;
+  status: string;
+  created_by: string;
+  members_count: number;
+}
+
+export interface CircleAvailabilityResponseData {
+  members: CircleRosterMember[];
+  common_availability: Record<string, Array<{ start: string; end: string; status: string }>>;
+  days_off: Record<string, DaysOffDateSummary>;
+  off_time: Record<string, OffTimeDateSummary>;
+  suggestions: Array<{
+    date: string;
+    start: string;
+    end: string;
+    duration_hours: number;
+    score: number;
+  }>;
+  plans: CirclePlanSummary[];
+}
+
 export interface ActivityEvent {
   id: number;
   circle_id: number;

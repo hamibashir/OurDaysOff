@@ -18,8 +18,8 @@ class StorePlanRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:1000'],
             'event_type' => ['required', 'string', 'in:social,meal,travel,other'],
-            'start_at' => ['nullable', 'date_format:Y-m-d H:i:s'],
-            'end_at' => ['nullable', 'date_format:Y-m-d H:i:s'],
+            'start_at' => ['nullable', 'date'],
+            'end_at' => ['nullable', 'date'],
             'status' => ['nullable', 'string', 'in:draft,polling,confirmed'],
         ];
     }
