@@ -22,6 +22,7 @@ Route::prefix('v1')->middleware('throttle:300,1')->group(function () {
     Route::post('/auth/register', [AuthController::class, 'register'])->middleware('throttle:15,1');
     Route::post('/auth/login', [AuthController::class, 'login'])->middleware('throttle:15,1');
     Route::post('/devices/pair', [DeviceController::class, 'pairDevice'])->middleware('throttle:15,1');
+    Route::post('/profile/handle-check', [ProfileController::class, 'checkHandle'])->middleware('throttle:60,1');
 
     // Authenticated Routes
     Route::middleware('auth:sanctum')->group(function () {

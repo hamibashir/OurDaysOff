@@ -9,9 +9,9 @@ This document outlines the granular, step-by-step roadmap for building the produ
 | Phase | Description | Steps | Status |
 | :--- | :--- | :--- | :--- |
 | **Phase 1** | **Foundation, Networking, Design System & Router** | Steps 1.1 – 1.4 | 🟢 Completed |
-| **Phase 2** | **Authentication & User Profile State** | Steps 2.1 – 2.4 | 🟡 In Progress (Up Next) |
-| **Phase 3** | **Personal Schedule, Shift Templates & Fast-Tap** | Steps 3.1 – 3.4 | ⚪ Queued |
-| **Phase 4** | **AI Rota Vision Camera Scanner & Importer** | Steps 4.1 – 4.3 | ⚪ Queued |
+| **Phase 2** | **Authentication & User Profile State** | Steps 2.1 – 2.4 | 🟢 Completed |
+| **Phase 3** | **Personal Schedule, Shift Templates & Fast-Tap** | Steps 3.1 – 3.4 | 🟢 Completed |
+| **Phase 4** | **AI Rota Vision Camera Scanner & Importer** | Steps 4.1 – 4.3 | 🟡 In Progress (Up Next) |
 | **Phase 5** | **Circles, Members, Invites & Activity Feed** | Steps 5.1 – 5.4 | ⚪ Queued |
 | **Phase 6** | **Schedule Matching, Rota Grid Matrix & Overlap** | Steps 6.1 – 6.4 | ⚪ Queued |
 | **Phase 7** | **Meetup Plans, RSVPs, Chat & Calendar Export** | Steps 7.1 – 7.4 | ⚪ Queued |
@@ -45,25 +45,25 @@ This document outlines the granular, step-by-step roadmap for building the produ
   - Implement `AuthRepository` (`/auth/login`, `/auth/register`, `/auth/logout`, `/auth/me`).
 - [x] **Step 2.2: Auth State Notifier & Auto-Login**
   - Implement Riverpod `AuthNotifier` to check stored token on app launch and hydrate user state.
-- [ ] **Step 2.3: Login & Register Screens**
+- [x] **Step 2.3: Login & Register Screens**
   - Build clean input forms, handle check debounce via `/profile/handle-check`, password visibility toggles, and validation.
-- [ ] **Step 2.4: Profile Screen & Settings**
+- [x] **Step 2.4: Profile Screen & Settings**
   - Display name edit, handle display, visibility settings, and secure sign-out.
 
 ### Phase 3: Personal Schedule, Shift Templates & Fast-Tap
-- [ ] **Step 3.1: Schedule Models & Repository**
+- [x] **Step 3.1: Schedule Models & Repository**
   - Implement `ShiftTemplate`, `ScheduleEntry`, and `AvailabilityBlock` models.
   - Implement `ScheduleRepository` and `ShiftTemplateRepository`.
-- [ ] **Step 3.2: Month & Day Calendar Views**
+- [x] **Step 3.2: Month & Day Calendar Views**
   - Build `TableCalendar` integration with multi-color dot indicators for shifts.
-- [ ] **Step 3.3: High-Velocity Fast-Tap Stamping Toolbar**
+- [x] **Step 3.3: High-Velocity Fast-Tap Stamping Toolbar**
   - Sticky bottom template bar (`+ Day`, `+ Night`, `+ Off`).
   - Single-tap rapid date stamping with haptic feedback.
-- [ ] **Step 3.4: Date Detail Bottom Sheet & Overrides**
+- [x] **Step 3.4: Date Detail Bottom Sheet & Overrides**
   - Detailed shift info card, time adjustments, and manual availability override toggle.
 
 ### Phase 4: AI Rota Vision Camera Scanner & Importer
-- [ ] **Step 4.1: Camera & Gallery Image Picker**
+- [x] **Step 4.1: Camera & Gallery Image Picker**
   - Integrate `image_picker` with platform permissions.
 - [ ] **Step 4.2: Multipart AI Vision Upload & External Prompt Mode**
   - Upload rota photo to `/imports/rota` and support external JSON paste fallback.
