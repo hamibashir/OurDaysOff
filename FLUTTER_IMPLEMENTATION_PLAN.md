@@ -11,8 +11,8 @@ This document outlines the granular, step-by-step roadmap for building the produ
 | **Phase 1** | **Foundation, Networking, Design System & Router** | Steps 1.1 – 1.4 | 🟢 Completed |
 | **Phase 2** | **Authentication & User Profile State** | Steps 2.1 – 2.4 | 🟢 Completed |
 | **Phase 3** | **Personal Schedule, Shift Templates & Fast-Tap** | Steps 3.1 – 3.4 | 🟢 Completed |
-| **Phase 4** | **AI Rota Vision Camera Scanner & Importer** | Steps 4.1 – 4.3 | 🟡 In Progress (Up Next) |
-| **Phase 5** | **Circles, Members, Invites & Activity Feed** | Steps 5.1 – 5.4 | ⚪ Queued |
+| **Phase 4** | **AI Rota Vision Camera Scanner & Importer** | Steps 4.1 – 4.3 | 🟢 Completed |
+| **Phase 5** | **Circles, Members, Invites & Activity Feed** | Steps 5.1 – 5.4 | 🟡 In Progress (Up Next) |
 | **Phase 6** | **Schedule Matching, Rota Grid Matrix & Overlap** | Steps 6.1 – 6.4 | ⚪ Queued |
 | **Phase 7** | **Meetup Plans, RSVPs, Chat & Calendar Export** | Steps 7.1 – 7.4 | ⚪ Queued |
 | **Phase 8** | **Notifications Center & Companion Device Pairing** | Steps 8.1 – 8.3 | ⚪ Queued |
@@ -65,43 +65,43 @@ This document outlines the granular, step-by-step roadmap for building the produ
 ### Phase 4: AI Rota Vision Camera Scanner & Importer
 - [x] **Step 4.1: Camera & Gallery Image Picker**
   - Integrate `image_picker` with platform permissions.
-- [ ] **Step 4.2: Multipart AI Vision Upload & External Prompt Mode**
+- [x] **Step 4.2: Multipart AI Vision Upload & External Prompt Mode**
   - Upload rota photo to `/imports/rota` and support external JSON paste fallback.
-- [ ] **Step 4.3: Interactive Shift Preview & Batch Confirmation**
+- [x] **Step 4.3: Interactive Shift Preview & Batch Confirmation**
   - Editable data table of parsed shifts, delete row, and confirm batch import to `/imports/confirm`.
 
 ### Phase 5: Circles, Members, Invites & Activity Feed
-- [ ] **Step 5.1: Circle Models & Repository**
+- [x] **Step 5.1: Circle Models & Repository**
   - Implement `CircleModel`, `CircleMember`, and `ActivityEvent` models.
-- [ ] **Step 5.2: Circles List & Creation**
+- [x] **Step 5.2: Circles List & Creation**
   - List user's circles, member counts, and `CreateCircleModal`.
-- [ ] **Step 5.3: Circle Detail, Member Roles & Privacy Rules**
+- [x] **Step 5.3: Circle Detail, Member Roles & Privacy Rules**
   - Member management, privacy selector (`free_busy`, `shifts`, `details`), role changes.
-- [ ] **Step 5.4: Invite Generator & Activity Feed**
+- [x] **Step 5.4: Invite Generator & Activity Feed**
   - 6-character code generator, native share sheet, and recent activity log.
 
 ### Phase 6: Schedule Matching, Rota Grid Matrix & Overlap
-- [ ] **Step 6.1: Matching Repository & Response Models**
+- [x] **Step 6.1: Matching Repository & Response Models**
   - Fetch circle matching payload from `/circles/{id}/availability`.
-- [ ] **Step 6.2: Horizontal Scrollable Rota Grid Matrix**
+- [x] **Step 6.2: Horizontal Scrollable Rota Grid Matrix**
   - Members (Y-axis) vs Dates (X-axis) with colored shift badges.
-- [ ] **Step 6.3: "Days Off" vs "Off Time" Toggle**
+- [x] **Step 6.3: "Days Off" vs "Off Time" Toggle**
   - Filter full days off vs overlapping shift hours.
-- [ ] **Step 6.4: AI Suggested Meetup Windows & 1-on-1 Compare**
+- [x] **Step 6.4: AI Suggested Meetup Windows & 1-on-1 Compare**
   - Top scored meetup suggestions and custom member comparison tool.
 
 ### Phase 7: Meetup Plans, RSVPs, Chat & Calendar Export
-- [ ] **Step 7.1: Plan Models & Repository**
+- [x] **Step 7.1: Plan Models & Repository**
   - Implement `PlanModel`, `PlanMessage`, `PlanLocation`.
-- [ ] **Step 7.2: Plans Feed & Quick Create**
+- [x] **Step 7.2: Plans Feed & Quick Create**
   - Upcoming/polling/past tabs, pre-filled plan creation from suggestions.
-- [ ] **Step 7.3: RSVP State Machine & Location Voting**
+- [x] **Step 7.3: RSVP State Machine & Location Voting**
   - Attending / Tentative / Declined toggles, propose venue, and upvote location.
-- [ ] **Step 7.4: In-Plan Discussion Thread & .ics Native Export**
+- [x] **Step 7.4: In-Plan Discussion Thread & .ics Native Export**
   - Comments feed and calendar (.ics) file generation with native calendar intent.
 
 ### Phase 8: Notifications Center & Companion Device Pairing
-- [ ] **Step 8.1: In-App Notification Center**
+- [x] **Step 8.1: In-App Notification Center**
   - AppBar bell badge, read/unread status, mark all read, deep link navigation.
 - [ ] **Step 8.2: Companion Device 6-Digit Pairing**
   - Generate one-time pairing code and pair secondary devices.

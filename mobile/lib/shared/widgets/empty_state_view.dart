@@ -9,6 +9,8 @@ class EmptyStateView extends StatelessWidget {
   final String description;
   final String? actionText;
   final VoidCallback? onAction;
+  final String? secondaryActionText;
+  final VoidCallback? onSecondaryAction;
   final double iconSize;
 
   const EmptyStateView({
@@ -18,6 +20,8 @@ class EmptyStateView extends StatelessWidget {
     required this.description,
     this.actionText,
     this.onAction,
+    this.secondaryActionText,
+    this.onSecondaryAction,
     this.iconSize = 48,
   });
 
@@ -61,6 +65,16 @@ class EmptyStateView extends StatelessWidget {
               AppButton(
                 text: actionText!,
                 onPressed: onAction,
+                fullWidth: false,
+                size: AppButtonSize.medium,
+              ),
+            ],
+            if (secondaryActionText != null && onSecondaryAction != null) ...[
+              const SizedBox(height: 12),
+              AppButton(
+                text: secondaryActionText!,
+                onPressed: onSecondaryAction,
+                variant: AppButtonVariant.outline,
                 fullWidth: false,
                 size: AppButtonSize.medium,
               ),

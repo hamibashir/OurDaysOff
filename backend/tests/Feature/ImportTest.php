@@ -13,7 +13,7 @@ class ImportTest extends TestCase
 
     public function test_user_can_upload_rota_file_for_preview_and_confirm(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['is_premium' => true]);
 
         // 1. Upload mock file for extraction preview
         $file = UploadedFile::fake()->create('my_rota.png', 500, 'image/png');

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../core/theme/app_colors.dart';
@@ -32,6 +33,11 @@ class ScheduleScreen extends ConsumerWidget {
               foregroundColor: AppColors.primaryDark,
             ),
             onPressed: () => notifier.jumpToToday(),
+          ),
+          IconButton(
+            icon: const Icon(LucideIcons.sparkles, size: 18),
+            tooltip: 'Import Rota',
+            onPressed: () => context.push('/rota-import'),
           ),
           IconButton(
             icon: const Icon(LucideIcons.rotateCw, size: 18),

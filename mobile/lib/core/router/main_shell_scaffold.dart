@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/auth/providers/auth_notifier.dart';
+import '../../features/notifications/views/widgets/notification_bell_button.dart';
 import '../theme/app_colors.dart';
 
 class MainShellScaffold extends ConsumerWidget {
@@ -58,15 +59,7 @@ class MainShellScaffold extends ConsumerWidget {
           ],
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_none, size: 22),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Notifications Center')),
-              );
-            },
-            tooltip: 'Notifications',
-          ),
+          const NotificationBellButton(),
           Padding(
             padding: const EdgeInsets.only(right: 16, left: 4),
             child: GestureDetector(
