@@ -1,9 +1,12 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../features/auth/providers/auth_notifier.dart';
 import '../../features/notifications/views/widgets/notification_bell_button.dart';
 import '../theme/app_colors.dart';
+import '../utils/haptic_feedback.dart';
 
 class MainShellScaffold extends ConsumerWidget {
   final StatefulNavigationShell navigationShell;
@@ -14,6 +17,7 @@ class MainShellScaffold extends ConsumerWidget {
   });
 
   void _onTap(BuildContext context, int index) {
+    AppHaptics.selection();
     navigationShell.goBranch(
       index,
       initialLocation: index == navigationShell.currentIndex,
@@ -87,53 +91,78 @@ class MainShellScaffold extends ConsumerWidget {
         ],
       ),
       body: navigationShell,
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          color: AppColors.surface,
-          border: Border(top: BorderSide(color: AppColors.border, width: 1)),
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _NavBarItem(
-                  icon: Icons.calendar_month_outlined,
-                  activeIcon: Icons.calendar_month,
-                  label: 'Dashboard',
-                  isSelected: navigationShell.currentIndex == 0,
-                  onTap: () => _onTap(context, 0),
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
+          child: Container(
+            height: 64,
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.92),
+              borderRadius: BorderRadius.circular(28),
+              border: Border.all(
+                color: AppColors.border.withValues(alpha: 0.8),
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.07),
+                  blurRadius: 24,
+                  offset: const Offset(0, 8),
+                  spreadRadius: -2,
                 ),
-                _NavBarItem(
-                  icon: Icons.schedule_outlined,
-                  activeIcon: Icons.schedule,
-                  label: 'Schedule',
-                  isSelected: navigationShell.currentIndex == 1,
-                  onTap: () => _onTap(context, 1),
-                ),
-                _NavBarItem(
-                  icon: Icons.people_outline,
-                  activeIcon: Icons.people,
-                  label: 'Circles',
-                  isSelected: navigationShell.currentIndex == 2,
-                  onTap: () => _onTap(context, 2),
-                ),
-                _NavBarItem(
-                  icon: Icons.tune_outlined,
-                  activeIcon: Icons.tune,
-                  label: 'Compare',
-                  isSelected: navigationShell.currentIndex == 3,
-                  onTap: () => _onTap(context, 3),
-                ),
-                _NavBarItem(
-                  icon: Icons.event_available_outlined,
-                  activeIcon: Icons.event_available,
-                  label: 'Plans',
-                  isSelected: navigationShell.currentIndex == 4,
-                  onTap: () => _onTap(context, 4),
+                BoxShadow(
+                  color: AppColors.primary.withValues(alpha: 0.04),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
                 ),
               ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(28),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _NavBarItem(
+                      icon: LucideIcons.calendar,
+                      activeIcon: LucideIcons.calendar,
+                      label: 'Dashboard',
+                      isSelected: navigationShell.currentIndex == 0,
+                      onTap: () => _onTap(context, 0),
+                    ),
+                    _NavBarItem(
+                      icon: LucideIcons.clock,
+                      activeIcon: LucideIcons.clock,
+                      label: 'Schedule',
+                      isSelected: navigationShell.currentIndex == 1,
+                      onTap: () => _onTap(context, 1),
+                    ),
+                    _NavBarItem(
+                      icon: LucideIcons.users,
+                      activeIcon: LucideIcons.users,
+                      label: 'Circles',
+                      isSelected: navigationShell.currentIndex == 2,
+                      onTap: () => _onTap(context, 2),
+                    ),
+                    _NavBarItem(
+                      icon: LucideIcons.sliders,
+                      activeIcon: LucideIcons.sliders,
+                      label: 'Compare',
+                      isSelected: navigationShell.currentIndex == 3,
+                      onTap: () => _onTap(context, 3),
+                    ),
+                    _NavBarItem(
+                      icon: LucideIcons.calendarCheck,
+                      activeIcon: LucideIcons.calendarCheck,
+                      label: 'Plans',
+                      isSelected: navigationShell.currentIndex == 4,
+                      onTap: () => _onTap(context, 4),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -159,37 +188,58 @@ class _NavBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.primarySurface : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-          border: isSelected
-              ? Border.all(color: AppColors.primaryLight.withValues(alpha: 0.5), width: 1)
-              : Border.all(color: Colors.transparent),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              isSelected ? activeIcon : icon,
-              size: 20,
-              color: isSelected ? AppColors.primaryDark : AppColors.textSubtle,
-            ),
-            const SizedBox(height: 3),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 10,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                color: isSelected ? AppColors.primaryDark : AppColors.textMuted,
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 220),
+          curve: Curves.easeOutCubic,
+          margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.primarySurface : Colors.transparent,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedScale(
+                scale: isSelected ? 1.08 : 1.0,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeOutBack,
+                child: Icon(
+                  isSelected ? activeIcon : icon,
+                  size: 19,
+                  color: isSelected ? AppColors.primaryDark : AppColors.textSubtle,
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 3),
+              Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 10,
+                  letterSpacing: -0.2,
+                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                  color: isSelected ? AppColors.primaryDark : AppColors.textMuted,
+                ),
+              ),
+              const SizedBox(height: 2),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 220),
+                curve: Curves.easeOutCubic,
+                width: isSelected ? 3.5 : 0,
+                height: 3.5,
+                decoration: BoxDecoration(
+                  color: isSelected ? AppColors.primary : Colors.transparent,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

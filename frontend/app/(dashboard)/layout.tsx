@@ -66,6 +66,15 @@ export default function DashboardLayout({
     ...(user?.is_admin ? [{ name: "Admin Panel", href: "/admin", icon: ShieldCheck }] : []),
   ];
 
+  const mobileNavItems = [
+    { name: "Dashboard", href: "/dashboard", icon: Calendar },
+    { name: "Schedule", href: "/schedule", icon: Clock },
+    { name: "Circles", href: "/circles", icon: Users },
+    { name: "Compare", href: "/compare", icon: Sliders },
+    { name: "Plans", href: "/plans", icon: CalendarCheck },
+    ...(user?.is_admin ? [{ name: "Admin", href: "/admin", icon: ShieldCheck }] : []),
+  ];
+
   return (
     <div className="min-h-screen flex bg-[#FAF9F6] text-[#1F2223] font-sans selection:bg-[#81D8D0]/30">
       {/* Route Transition Top Progress Indicator */}
@@ -158,10 +167,10 @@ export default function DashboardLayout({
         </main>
       </div>
 
-      {/* Mobile Floating Bottom Navigation Bar (<768px) */}
-      <div className="fixed bottom-3 left-3 right-3 z-50 md:hidden">
-        <nav className="bg-white/95 backdrop-blur-md border border-[#E8E5DF] rounded-2xl p-1.5 shadow-lg flex items-center justify-around">
-          {navItems.map((item) => {
+      {/* Mobile Modern Floating Dock (<768px) */}
+      <div className="fixed bottom-3 sm:bottom-4 inset-x-3 max-w-lg mx-auto z-50 md:hidden">
+        <nav className="bg-white/90 backdrop-blur-xl border border-white/80 dark:border-white/10 rounded-2xl sm:rounded-3xl p-1.5 shadow-[0_12px_32px_-4px_rgba(0,0,0,0.08),0_4px_12px_-2px_rgba(0,0,0,0.04)] ring-1 ring-[#1F2223]/[0.05] flex items-center justify-around">
+          {mobileNavItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(`${item.href}`));
 
@@ -169,14 +178,28 @@ export default function DashboardLayout({
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-[10px] transition-all min-w-[52px] outline-none focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 select-none ${
+                className={`relative flex flex-col items-center justify-center py-2 px-2 rounded-xl transition-all duration-200 outline-none focus:outline-none select-none active:scale-95 flex-1 min-w-0 ${
                   isActive
-                    ? "bg-[#81D8D0]/20 text-[#1D5E57] font-bold border border-[#81D8D0]/50"
-                    : "text-[#656A6D] hover:text-[#1F2223] font-medium"
+                    ? "bg-[#81D8D0]/18 text-[#144A43] font-semibold"
+                    : "text-[#707579] hover:text-[#1F2223] font-medium hover:bg-black/[0.02]"
                 }`}
               >
-                <Icon className={`w-4 h-4 mb-0.5 ${isActive ? "text-[#23756C]" : "text-[#959A9E]"}`} />
-                <span className="truncate max-w-[60px]">{item.name}</span>
+                <div className="relative">
+                  <Icon
+                    className={`w-[18px] h-[18px] transition-transform duration-200 ${
+                      isActive ? "text-[#1B635A] scale-105 stroke-[2.2]" : "text-[#8E9398] stroke-[1.8]"
+                    }`}
+                  />
+                </div>
+                <span className="text-[10.5px] leading-tight tracking-tight mt-1 truncate max-w-full">
+                  {item.name}
+                </span>
+                {/* Active Indicator Micro-Pill */}
+                <span
+                  className={`absolute -bottom-0.5 w-1 h-1 rounded-full transition-all duration-300 ${
+                    isActive ? "bg-[#23756C] opacity-100 scale-100" : "opacity-0 scale-50"
+                  }`}
+                />
               </Link>
             );
           })}
