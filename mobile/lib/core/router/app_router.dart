@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/admin/views/admin_panel_screen.dart';
+
 import '../../features/auth/providers/auth_notifier.dart';
 import '../../features/auth/providers/auth_state.dart';
 import '../../features/auth/views/login_screen.dart';
@@ -9,6 +11,7 @@ import '../../features/auth/views/register_screen.dart';
 import '../../features/circles/views/circle_detail_screen.dart';
 import '../../features/circles/views/circles_screen.dart';
 import '../../features/dashboard/views/dashboard_screen.dart';
+import '../../features/devices/views/companion_devices_screen.dart';
 import '../../features/matching/views/compare_screen.dart';
 import '../../features/notifications/views/notifications_screen.dart';
 import '../../features/plans/views/plan_detail_screen.dart';
@@ -88,6 +91,20 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/notifications',
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => const NotificationsScreen(),
+      ),
+
+      // Companion Devices Route
+      GoRoute(
+        path: '/devices',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) => const CompanionDevicesScreen(),
+      ),
+
+      // Admin Dashboard Route
+      GoRoute(
+        path: '/admin',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) => const AdminPanelScreen(),
       ),
 
       // Rota Import Route

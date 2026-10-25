@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/storage/offline_cache_service.dart';
 import '../../../core/utils/date_time_utils.dart';
 import '../../../core/utils/haptic_feedback.dart';
 import '../data/schedule_repository.dart';
@@ -12,24 +13,44 @@ final scheduleNotifierProvider =
     StateNotifierProvider<ScheduleNotifier, ScheduleState>((ref) {
   final scheduleRepo = ref.watch(scheduleRepositoryProvider);
   final templateRepo = ref.watch(shiftTemplateRepositoryProvider);
+  final offlineCache = ref.watch(offlineCacheServiceProvider);
   return ScheduleNotifier(
     scheduleRepo: scheduleRepo,
     templateRepo: templateRepo,
+    offlineCache: offlineCache,
   );
 });
 
 class ScheduleNotifier extends StateNotifier<ScheduleState> {
   final ScheduleRepository scheduleRepo;
   final ShiftTemplateRepository templateRepo;
+  final OfflineCacheService offlineCache;
 
   ScheduleNotifier({
     required this.scheduleRepo,
     required this.templateRepo,
-  }) : super(ScheduleState.initial()) {
+    OfflineCacheService? offlineCache,
+  })  : offlineCache = offlineCache ?? OfflineCacheService(),
+        super(ScheduleState.initial()) {
     init();
   }
 
   Future<void> init() async {
+    // 1. Instantly hydrate from local offline cache
+    final cachedEntries = offlineCache.getCachedSchedule();
+    if (cachedEntries.isNotEmpty) {
+      final entriesMap = <DateTime, List<ScheduleEntry>>{};
+      for (final entry in cachedEntries) {
+        final key = DateTimeUtils.dateOnly(entry.date);
+        entriesMap.putIfAbsent(key, () => []).add(entry);
+      }
+      state = state.copyWith(
+        entries: entriesMap,
+        isServedFromCache: true,
+      );
+    }
+
+    // 2. Fetch fresh data from network
     await Future.wait([
       loadMonth(state.focusedMonth),
       loadTemplates(),
@@ -67,15 +88,22 @@ class ScheduleNotifier extends StateNotifier<ScheduleState> {
         overridesMap[key] = override;
       }
 
+      // Save to persistent offline cache
+      offlineCache.saveSchedule(entriesList);
+
       state = state.copyWith(
         focusedMonth: month,
         entries: entriesMap,
         overrides: overridesMap,
         isLoading: false,
+        isServedFromCache: false,
       );
     } catch (e) {
+      // If we have cached entries, keep them and mark as cached
+      final hasCached = state.entries.isNotEmpty;
       state = state.copyWith(
         isLoading: false,
+        isServedFromCache: hasCached,
         errorMessage: e.toString().replaceFirst('Exception: ', ''),
       );
     }

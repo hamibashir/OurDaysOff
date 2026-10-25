@@ -83,6 +83,32 @@ class ScheduleScreen extends ConsumerWidget {
                   ),
                 ),
               ],
+              if (scheduleState.isServedFromCache) ...[
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: AppColors.statusLeaveBg,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppColors.statusLeaveBorder),
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(LucideIcons.wifiOff, size: 14, color: AppColors.statusLeave),
+                      SizedBox(width: 6),
+                      Text(
+                        'Viewing cached offline schedule',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.statusLeave,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
               const MonthCalendarView(),
               const SizedBox(height: 8),
               const DayAgendaView(),

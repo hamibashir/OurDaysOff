@@ -21,6 +21,7 @@ class AppTextField extends StatefulWidget {
   final bool autofocus;
   final int maxLines;
   final FocusNode? focusNode;
+  final TextCapitalization textCapitalization;
 
   const AppTextField({
     super.key,
@@ -41,6 +42,7 @@ class AppTextField extends StatefulWidget {
     this.autofocus = false,
     this.maxLines = 1,
     this.focusNode,
+    this.textCapitalization = TextCapitalization.none,
   });
 
   @override
@@ -77,6 +79,7 @@ class _AppTextFieldState extends State<AppTextField> {
           focusNode: widget.focusNode,
           obscureText: _obscureText,
           keyboardType: widget.keyboardType,
+          textCapitalization: widget.textCapitalization,
           textInputAction: widget.textInputAction,
           enabled: widget.enabled,
           autofocus: widget.autofocus,

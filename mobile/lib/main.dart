@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'core/router/app_router.dart';
+import 'core/storage/offline_cache_service.dart';
 import 'core/theme/app_theme.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  final offlineCache = OfflineCacheService();
+  await offlineCache.init();
+
   runApp(
-    const ProviderScope(
-      child: OurDaysOffApp(),
+    ProviderScope(
+      overrides: [
+        offlineCacheServiceProvider.overrideWithValue(offlineCache),
+      ],
+      child: const OurDaysOffApp(),
     ),
   );
 }

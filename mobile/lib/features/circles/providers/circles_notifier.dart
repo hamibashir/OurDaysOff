@@ -1,33 +1,50 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/network/error_handler.dart';
+import '../../../core/storage/offline_cache_service.dart';
 import '../data/circle_repository.dart';
 import '../models/circle_model.dart';
 import 'circles_state.dart';
 
 class CirclesNotifier extends StateNotifier<CirclesState> {
   final CircleRepository _repository;
+  final OfflineCacheService _offlineCache;
 
-  CirclesNotifier(this._repository) : super(const CirclesState()) {
+  CirclesNotifier(this._repository, [OfflineCacheService? offlineCache])
+      : _offlineCache = offlineCache ?? OfflineCacheService(),
+        super(const CirclesState()) {
+    // 1. Instantly hydrate from local cache
+    final cached = _offlineCache.getCachedCircles();
+    if (cached.isNotEmpty) {
+      state = state.copyWith(
+        status: CirclesStatus.loaded,
+        circles: cached,
+      );
+    }
+    // 2. Fetch fresh circles
     loadCircles();
   }
 
   Future<void> loadCircles() async {
-    state = state.copyWith(status: CirclesStatus.loading, clearError: true);
+    if (state.circles.isEmpty) {
+      state = state.copyWith(status: CirclesStatus.loading, clearError: true);
+    }
     try {
       final circles = await _repository.getCircles();
+      _offlineCache.saveCircles(circles);
       state = state.copyWith(
         status: CirclesStatus.loaded,
         circles: circles,
       );
     } on AppException catch (e) {
+      // If we already have cached circles, stay loaded
       state = state.copyWith(
-        status: CirclesStatus.error,
+        status: state.circles.isNotEmpty ? CirclesStatus.loaded : CirclesStatus.error,
         errorMessage: e.message,
       );
     } catch (e) {
       state = state.copyWith(
-        status: CirclesStatus.error,
+        status: state.circles.isNotEmpty ? CirclesStatus.loaded : CirclesStatus.error,
         errorMessage: 'Failed to load circles: ${e.toString()}',
       );
     }
@@ -121,5 +138,6 @@ class CirclesNotifier extends StateNotifier<CirclesState> {
 final circlesNotifierProvider =
     StateNotifierProvider<CirclesNotifier, CirclesState>((ref) {
   final repository = ref.watch(circleRepositoryProvider);
-  return CirclesNotifier(repository);
+  final offlineCache = ref.watch(offlineCacheServiceProvider);
+  return CirclesNotifier(repository, offlineCache);
 });

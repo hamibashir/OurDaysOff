@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../core/theme/app_colors.dart';
@@ -508,8 +509,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     trailing: const Icon(LucideIcons.chevronRight, size: 18, color: AppColors.textSubtle),
                     onTap: () {
                       AppHaptics.light();
-                      // Show companion device dialog or route
-                      _showCompanionDeviceSheet();
+                      context.push('/devices');
                     },
                   ),
                   const Divider(height: 1),
@@ -533,10 +533,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       iconColor: AppColors.accentViolet,
                       trailing: const Icon(LucideIcons.chevronRight, size: 18, color: AppColors.textSubtle),
                       onTap: () {
-                        // Navigate to Admin screen if available
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Admin panel will open.')),
-                        );
+                        AppHaptics.light();
+                        context.push('/admin');
                       },
                     ),
                   ],
@@ -553,61 +551,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               onPressed: _handleLogout,
             ),
             const SizedBox(height: 30),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showCompanionDeviceSheet() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
-        decoration: const BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Row(
-                  children: [
-                    Icon(LucideIcons.smartphone, color: AppColors.primary, size: 22),
-                    SizedBox(width: 8),
-                    Text('Companion Device Sync', style: AppTextStyles.titleMedium),
-                  ],
-                ),
-                IconButton(
-                  icon: const Icon(LucideIcons.x, size: 20),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'Pair your iPad, Android tablet, or desktop companion to sync your roster in real time without entering passwords.',
-              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
-            ),
-            const SizedBox(height: 24),
-            AppButton(
-              text: 'Generate 6-Digit Pairing Code',
-              icon: LucideIcons.key,
-              onPressed: () {
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Pairing code generated! Ready for secondary device.'),
-                    backgroundColor: AppColors.primary,
-                  ),
-                );
-              },
-            ),
           ],
         ),
       ),

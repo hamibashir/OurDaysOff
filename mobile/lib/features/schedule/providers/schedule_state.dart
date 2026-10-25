@@ -11,6 +11,7 @@ class ScheduleState {
   final List<ShiftTemplate> templates;
   final bool isLoading;
   final String? errorMessage;
+  final bool isServedFromCache;
 
   // Fast-Tap Stamping Mode States
   final ShiftTemplate? activeStamp;
@@ -26,6 +27,7 @@ class ScheduleState {
     required this.templates,
     this.isLoading = false,
     this.errorMessage,
+    this.isServedFromCache = false,
     this.activeStamp,
     this.isDayOffStampActive = false,
     this.isEraseStampActive = false,
@@ -80,6 +82,7 @@ class ScheduleState {
     List<ShiftTemplate>? templates,
     bool? isLoading,
     String? errorMessage,
+    bool? isServedFromCache,
     ShiftTemplate? activeStamp,
     bool clearActiveStamp = false,
     bool? isDayOffStampActive,
@@ -94,6 +97,7 @@ class ScheduleState {
       templates: templates ?? this.templates,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage,
+      isServedFromCache: isServedFromCache ?? this.isServedFromCache,
       activeStamp: clearActiveStamp ? null : (activeStamp ?? this.activeStamp),
       isDayOffStampActive: isDayOffStampActive ?? this.isDayOffStampActive,
       isEraseStampActive: isEraseStampActive ?? this.isEraseStampActive,

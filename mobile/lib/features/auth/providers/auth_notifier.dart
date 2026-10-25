@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/storage/offline_cache_service.dart';
 import '../../../core/storage/secure_storage_service.dart';
 import '../data/auth_repository.dart';
 import '../models/user_model.dart';
@@ -8,20 +9,25 @@ import 'auth_state.dart';
 final authNotifierProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final repository = ref.watch(authRepositoryProvider);
   final storage = ref.watch(secureStorageServiceProvider);
+  final offlineCache = ref.watch(offlineCacheServiceProvider);
   return AuthNotifier(
     repository: repository,
     storage: storage,
+    offlineCache: offlineCache,
   );
 });
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthRepository repository;
   final SecureStorageService storage;
+  final OfflineCacheService offlineCache;
 
   AuthNotifier({
     required this.repository,
     required this.storage,
-  }) : super(AuthState.initial()) {
+    OfflineCacheService? offlineCache,
+  })  : offlineCache = offlineCache ?? OfflineCacheService(),
+        super(AuthState.initial()) {
     checkAuthStatus();
   }
 
@@ -118,6 +124,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     } finally {
       await storage.deleteAuthToken();
       await storage.clearAll();
+      await offlineCache.clearCache();
       state = AuthState.unauthenticated();
     }
   }
@@ -131,5 +138,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
   void updateUser(UserModel updatedUser) {
     storage.saveUserData(jsonEncode(updatedUser.toJson()));
     state = AuthState.authenticated(updatedUser);
+  }
+
+  /// Manually set session from companion device pairing or external auth
+  Future<void> setSession({required UserModel user, required String token}) async {
+    await storage.saveAuthToken(token);
+    await storage.saveUserData(jsonEncode(user.toJson()));
+    state = AuthState.authenticated(user);
   }
 }

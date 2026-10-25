@@ -12,12 +12,12 @@ This document outlines the granular, step-by-step roadmap for building the produ
 | **Phase 2** | **Authentication & User Profile State** | Steps 2.1 – 2.4 | 🟢 Completed |
 | **Phase 3** | **Personal Schedule, Shift Templates & Fast-Tap** | Steps 3.1 – 3.4 | 🟢 Completed |
 | **Phase 4** | **AI Rota Vision Camera Scanner & Importer** | Steps 4.1 – 4.3 | 🟢 Completed |
-| **Phase 5** | **Circles, Members, Invites & Activity Feed** | Steps 5.1 – 5.4 | 🟡 In Progress (Up Next) |
-| **Phase 6** | **Schedule Matching, Rota Grid Matrix & Overlap** | Steps 6.1 – 6.4 | ⚪ Queued |
-| **Phase 7** | **Meetup Plans, RSVPs, Chat & Calendar Export** | Steps 7.1 – 7.4 | ⚪ Queued |
-| **Phase 8** | **Notifications Center & Companion Device Pairing** | Steps 8.1 – 8.3 | ⚪ Queued |
-| **Phase 9** | **VIP Premium, Coupons & Admin Dashboard** | Steps 9.1 – 9.3 | ⚪ Queued |
-| **Phase 10** | **Offline Caching, Native Polish & Store Readiness** | Steps 10.1 – 10.3| ⚪ Queued |
+| **Phase 5** | **Circles, Members, Invites & Activity Feed** | Steps 5.1 – 5.4 | 🟢 Completed |
+| **Phase 6** | **Schedule Matching, Rota Grid Matrix & Overlap** | Steps 6.1 – 6.4 | 🟢 Completed |
+| **Phase 7** | **Meetup Plans, RSVPs, Chat & Calendar Export** | Steps 7.1 – 7.4 | 🟢 Completed |
+| **Phase 8** | **Notifications Center & Companion Device Pairing** | Steps 8.1 – 8.3 | 🟢 Completed |
+| **Phase 9** | **VIP Premium, Coupons & Admin Dashboard** | Steps 9.1 – 9.3 | 🟢 Completed |
+| **Phase 10** | **Offline Caching, Native Polish & Store Readiness** | Steps 10.1 – 10.3| 🟢 Completed |
 
 ---
 
@@ -103,23 +103,23 @@ This document outlines the granular, step-by-step roadmap for building the produ
 ### Phase 8: Notifications Center & Companion Device Pairing
 - [x] **Step 8.1: In-App Notification Center**
   - AppBar bell badge, read/unread status, mark all read, deep link navigation.
-- [ ] **Step 8.2: Companion Device 6-Digit Pairing**
+- [x] **Step 8.2: Companion Device 6-Digit Pairing**
   - Generate one-time pairing code and pair secondary devices.
-- [ ] **Step 8.3: Paired Devices Management**
+- [x] **Step 8.3: Paired Devices Management**
   - List active companion devices with revoke session capability.
 
 ### Phase 9: VIP Premium, Coupons & Admin Dashboard
-- [ ] **Step 9.1: Subscription Status & Coupon Redemption**
+- [x] **Step 9.1: Subscription Status & Coupon Redemption**
   - Promo code redemption via `/subscription/redeem` and VIP badge styling.
-- [ ] **Step 9.2: Admin Stats & User Management**
+- [x] **Step 9.2: Admin Stats & User Management**
   - Protected admin screen, platform metrics, user search, and premium toggle.
-- [ ] **Step 9.3: Coupon Management & Circle Oversight**
+- [x] **Step 9.3: Coupon Management & Circle Oversight**
   - Generate new promo codes, set expirations, toggle active status.
 
 ### Phase 10: Offline Caching, Native Polish & Store Readiness
-- [ ] **Step 10.1: Hive Local Storage & Offline Mode**
+- [x] **Step 10.1: Hive Local Storage & Offline Mode**
   - Cache personal schedule & circles for instant offline launch.
-- [ ] **Step 10.2: Native Haptics & Fluid Micro-Animations**
+- [x] **Step 10.2: Native Haptics & Fluid Micro-Animations**
   - Staggered list animations and iOS/Android haptic feedback.
-- [ ] **Step 10.3: App Icons, Splash Screen & Platform Build Verification**
+- [x] **Step 10.3: App Icons, Splash Screen & Platform Build Verification**
   - Configure native launch assets and verify `flutter analyze` with 0 warnings.

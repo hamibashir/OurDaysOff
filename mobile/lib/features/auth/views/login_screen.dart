@@ -7,6 +7,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/text_styles.dart';
 import '../../../shared/widgets/app_button.dart';
 import '../../../shared/widgets/app_text_field.dart';
+import '../../devices/providers/device_provider.dart';
 import '../providers/auth_notifier.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -58,6 +59,104 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         });
       }
     }
+  }
+
+  void _showPairingCodeSheet() {
+    final codeCtrl = TextEditingController();
+    bool isPairing = false;
+    String? pairError;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) => StatefulBuilder(
+        builder: (ctx, setSheetState) => Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(ctx).viewInsets.bottom,
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            decoration: const BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Row(
+                      children: [
+                        Icon(LucideIcons.smartphoneNfc, color: AppColors.primary, size: 22),
+                        SizedBox(width: 8),
+                        Text('Companion Code Login', style: AppTextStyles.titleMedium),
+                      ],
+                    ),
+                    IconButton(
+                      icon: const Icon(LucideIcons.x, size: 20),
+                      onPressed: () => Navigator.pop(sheetContext),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Enter the 6-character pairing code generated on your primary phone or computer to sign in immediately.',
+                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
+                ),
+                const SizedBox(height: 16),
+                if (pairError != null) ...[
+                  Text(
+                    pairError!,
+                    style: const TextStyle(color: AppColors.danger, fontSize: 12),
+                  ),
+                  const SizedBox(height: 8),
+                ],
+                AppTextField(
+                  controller: codeCtrl,
+                  label: '6-Digit Pairing Code',
+                  hint: 'e.g. 8AB3X9',
+                  prefixIcon: LucideIcons.key,
+                  autofocus: true,
+                  textCapitalization: TextCapitalization.characters,
+                ),
+                const SizedBox(height: 20),
+                AppButton(
+                  text: 'Connect & Sign In',
+                  isLoading: isPairing,
+                  onPressed: () async {
+                    final code = codeCtrl.text.trim();
+                    if (code.length < 6) {
+                      setSheetState(() => pairError = 'Please enter a valid 6-digit code.');
+                      return;
+                    }
+                    setSheetState(() => isPairing = true);
+                    final success = await ref
+                        .read(devicesNotifierProvider.notifier)
+                        .pairWithCode(pairingCode: code);
+
+                    if (sheetContext.mounted) {
+                      if (success) {
+                        Navigator.pop(sheetContext);
+                      } else {
+                        final err = ref.read(devicesNotifierProvider).error ??
+                            'Invalid or expired code. Please try again.';
+                        setSheetState(() {
+                          isPairing = false;
+                          pairError = err;
+                        });
+                      }
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -204,7 +303,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
+
+                    // Companion device quick login
+                    OutlinedButton.icon(
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 16),
+                        side: const BorderSide(color: AppColors.border),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        backgroundColor: AppColors.surface,
+                      ),
+                      icon: const Icon(LucideIcons.smartphoneNfc, size: 18, color: AppColors.primary),
+                      label: const Text(
+                        'Sign In with Companion Code',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      onPressed: _showPairingCodeSheet,
+                    ),
+                    const SizedBox(height: 20),
 
                     // Switch to Register
                     Wrap(
